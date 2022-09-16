@@ -7,8 +7,8 @@ const postSchema = mongoose.Schema({
         imgUrl: String,
     },
     selectedImg: String,
-    likeCound : {
-        type : String,
+    likeCount : {
+        type : Number,
         default : 0
     },
     createdAt: {
