@@ -29,9 +29,8 @@ export async function getPost(req, res) {
 
 export const createPost = async (req, res) => {
     const post = req.body;
-    console.log( '1'  ,req.userId);
-    console.log('2'  ,req.id);
-    const newPost = new PostMessage({...post , creator : req.userId , createdAt : new Date().toISOString()})
+
+    const newPost = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
     try {
         await newPost.save()
         res.status(201).json(newPost)
@@ -72,9 +71,7 @@ export const likePost = async (req, res) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id')
 
-    const post =  await PostMessage.findById(id)
-    const updatedPost = await PostMessage.findByIdAndUpdate(id, {likeCount : post.likeCount + 1 }, { new: true })
+    const post = await PostMessage.findById(id)
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true })
 
-    res.json(updatedPost)
-    console.log('updatedPost', updatedPost )
 }

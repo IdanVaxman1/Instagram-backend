@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import mongoose from "mongoose";
+
 
 import User from './auth.model.js'
 
@@ -18,11 +20,11 @@ export const signin = async (req, res) => {
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'test', { expiresIn: '1hr' })
 
         // console.log(token);
-        
-        res.status(200).json({ result: existingUser , token })
+
+        res.status(200).json({ result: existingUser, token })
 
     } catch (error) {
-        console.log( error);
+        console.log(error);
     }
 
 }
@@ -51,6 +53,21 @@ export const signup = async (req, res) => {
         console.log(error);
 
     }
+
+
+}
+
+export const updateUser = async (req, res) => {
+
+    const { id: _id } = req.params
+    const user = req.body
+    const token = req.headers.authorization.split(" ")[1]
+
+
+    const updatedUser = await User.findByIdAndUpdate(_id, { ...user, _id }, { new: true })
+    console.log(updatedUser );
+
+    res.status(200).json({ result: updatedUser, token })
 
 
 }
