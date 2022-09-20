@@ -17,10 +17,10 @@ const auth = async (req, res, next) => {
         next()
 
     } catch (error) {
-        res.locals.error = err;
-        const status = err.status || 500;
+        res.locals.error = error;
+        const status = error.status || 500;
         res.status(status);
-        res.render('error');
+        res.send(error);
     }
 
 }

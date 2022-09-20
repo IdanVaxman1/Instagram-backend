@@ -89,18 +89,36 @@ export const updateUser = async (req, res) => {
 
 }
 
-export const getUserPosts  = async (req, res) => {
-
+export const getUserPosts = async (req, res) => {
     const { id: _id } = req.params
 
     try {
-        const posts = await PostMessage.find({creator : _id})
-        console.log(posts);
+        const posts = await PostMessage.find({ creator: _id })
         res.status(200).json(posts)
 
     } catch (error) {
         console.log(error);
     }
+}
+
+export const following = async (req, res) => {
+
+    const { profileId } = req.body
+    const { id } = req.params
 
 
+    
+        const updatedUser = await User.findOneAndUpdate(
+            {
+                _id: profileId,
+                following: { $not: { $elemMatch: { $eq: profileId } } },
+            },
+            {
+                $push: { following: profileId },
+            },
+            {
+                new: true,
+            }
+            )
+            res.json(updatedUser)
 }
