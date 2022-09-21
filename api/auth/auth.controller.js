@@ -107,18 +107,19 @@ export const following = async (req, res) => {
     const { id } = req.params
 
 
-    
-        const updatedUser = await User.findOneAndUpdate(
-            {
-                _id: profileId,
-                following: { $not: { $elemMatch: { $eq: profileId } } },
-            },
-            {
-                $push: { following: profileId },
-            },
-            {
-                new: true,
-            }
-            )
-            res.json(updatedUser)
+
+    const updatedUser = await User.findOneAndUpdate(
+        {
+            _id: id,
+            following: { $not: { $elemMatch: { $eq: profileId } } },
+        },
+        {
+            $push: { following: profileId },
+        },
+        {
+            new: true,
+        }
+    )
+    if(updatedUser)  res.json(updatedUser);
+    console.log(updatedUser);
 }
