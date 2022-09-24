@@ -1,6 +1,7 @@
 
 import mongoose from "mongoose";
 import PostMessage from "./post.model.js";
+import User from '../auth/auth.model.js'
 
 export async function getPosts(req, res) {
     try {
@@ -10,6 +11,26 @@ export async function getPosts(req, res) {
         console.log(error);
     }
 }
+
+export async function getPostsByIds(req, res) {
+
+    const { id } = req.params
+
+    const user = await User.findById(id)
+
+    try {
+
+        const savedPosts = await PostMessage.find().where('_id').in(user.SavedPosts).exec();
+
+        console.log(savedPosts);
+        if(savedPosts) res.status(200).json(savedPosts)
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 
 export async function getPost(req, res) {
 

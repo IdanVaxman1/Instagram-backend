@@ -105,8 +105,7 @@ export const following = async (req, res) => {
 
     const { profileId } = req.body
     const { id } = req.params
-
-
+    const token = req.headers.authorization.split(" ")[1]
 
     const updatedUser = await User.findOneAndUpdate(
         {
@@ -120,6 +119,30 @@ export const following = async (req, res) => {
             new: true,
         }
     )
-    if(updatedUser)  res.json(updatedUser);
+    if (updatedUser)  res.status(200).json({ result: updatedUser, token })
     console.log(updatedUser);
+}
+
+export const savePost = async (req, res) => {
+
+    const { postId } = req.body
+    const { id } = req.params
+    const token = req.headers.authorization.split(" ")[1]
+
+    const updatedUser = await User.findOneAndUpdate(
+        {
+            _id: id,
+            SavedPosts: { $not: { $elemMatch: { $eq: postId } } },
+        },
+        {
+            $push: { SavedPosts: postId },
+        },
+        {
+            new: true,
+        }
+    )
+
+    console.log(updatedUser);
+    if (updatedUser)  res.status(200).json({ result: updatedUser, token })
+
 }
