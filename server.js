@@ -7,7 +7,6 @@ import authRoutes from './api/auth/auth.routes.js'
 
 const app = express()
 const PORT = process.env.PORT || 3030
-const CONNECTION_URL = 'mongodb+srv://idanvaxman:654753951@cluster0.aroqnhq.mongodb.net/?retryWrites=true&w=majority'
 
 app.use(cors())
 app.use(bodyParser.json({limit: '50mb'}));
